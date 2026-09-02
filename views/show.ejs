@@ -1,22 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= listing.title %></title>
-    <ul>
-        <li>Title: <%= listing.title %></li>
-        <li>Location: <%= listing.location %></li>
-        <li>Description: <%= listing.description %></li>
-        <li>Price: &#8377;<%= listing.price %></li>
-        <li>Image: <img src="<%= listing.image.url %>" alt="<%= listing.image.filename %>" width="200"></li>
-    </ul>
-    <a href="/listings/<%= listing._id %>/edit">EDIT</a>
-    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" style="display:inline;">
-        <button type="submit">DELETE</button>
-    </form>
-</head>
-<body>
-    
-</body>
-</html>
+<% layout('layouts/boilerplate') -%>
+
+<div class="container mt-5 mb-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9 col-md-11">
+
+            <!-- Page Heading -->
+            <div class="mb-4">
+                <h1 class="fw-bold">Listing Details</h1>
+                <p class="text-muted">
+                    Have a look at this beautiful property.
+                </p>
+            </div>
+
+            <!-- Listing Card -->
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+                <!-- Image -->
+                <img
+                    src="<%= listing.image.url %>"
+                    class="card-img-top"
+                    alt="listing image"
+                    style="height: 400px; object-fit: cover;"
+                >
+
+                <!-- Details -->
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Title -->
+                    <h2 class="fw-bold mb-3">
+                        <%= listing.title %>
+                    </h2>
+
+                    <!-- Location -->
+                    <p class="text-muted mb-4">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <%= listing.location %>
+                    </p>
+
+                    <hr>
+
+                    <!-- Description -->
+                    <div class="mt-4">
+                        <h5 class="fw-bold">About this place</h5>
+
+                        <p class="text-muted">
+                            <%= listing.description %>
+                        </p>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="mt-4">
+                        <h5 class="fw-bold">Price</h5>
+
+                        <h3 class="fw-bold">
+                            ₹<%= listing.price %>
+                            <small class="text-muted fs-6"> / night</small>
+                        </h3>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-3 mt-5">
+
+                        <!-- Edit -->
+                        <a
+                            href="/listings/<%= listing._id %>/edit"
+                            class="btn btn-dark px-4"
+                        >
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Edit
+                        </a>
+
+                        <!-- Delete -->
+                        <form
+                            action="/listings/<%= listing._id %>?_method=DELETE"
+                            method="POST"
+                        >
+                            <button
+                                type="submit"
+                                class="btn btn-outline-danger px-4"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

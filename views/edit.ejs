@@ -1,29 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDIT</title>
-</head>
-<body>
-    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required><br><br>
- 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required><br><br>
+<% layout('layouts/boilerplate') -%>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea><br><br>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
 
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" required><br><br>
+            <!-- Heading -->
+            <div class="mb-4">
+                <h1 class="fw-bold">Edit Listing</h1>
+                <p class="text-muted">
+                    Update the details of your property below.
+                </p>
+            </div>
 
-        <label for="image">Image URL:</label>
-        <input type="text" id="image" name="image"><br><br>
+            <!-- Form Card -->
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
 
-        <button type="submit">update</button>
-    </form>
-    
-</body>
-</html>
+                    <form
+                        action="/listings/<%= listing._id %>?_method=PUT"
+                        method="POST"
+                    >
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-semibold">
+                                Title
+                            </label>
+
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                class="form-control"
+                                value="<%= listing.title %>"
+                                required
+                            >
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-4">
+                            <label for="location" class="form-label fw-semibold">
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="form-control"
+                                value="<%= listing.location %>"
+                                required
+                            >
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-semibold">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                class="form-control"
+                                rows="5"
+                                required
+                            ><%= listing.description %></textarea>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-4">
+                            <label for="price" class="form-label fw-semibold">
+                                Price
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    class="form-control"
+                                    value="<%= listing.price %>"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="mb-4">
+                           <label for="image" class="form-label fw-semibold">
+                              Image URL
+                           </label>
+
+                        <input
+                            type="text"
+                            id="image"
+                            name="image[url]"
+                            class="form-control"
+                            value="<%= listing.image.url %>"
+                        >
+                        </div>
+                        <!-- Update Button -->
+                        <button
+                            type="submit"
+                            class="btn btn-dark w-100 py-2"
+                        >
+                            Update Listing
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> 

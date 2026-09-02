@@ -4,13 +4,15 @@ const mongoose= require("mongoose");
 const Listing = require("./models/listing");
 const path=require("path");
 const methodOverride=require("method-override");
+const ejsMate=require("ejs-mate");
 
 app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname,"public"))); 
 
-
-app.set("view engine", "ejs");
+app.set("view engine", "ejs");app
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({extended:true}));
+app.engine("ejs", ejsMate);
 
 app.get("/",(req,res)=>{
     res.send("working");
@@ -48,7 +50,7 @@ app.get("/listings" , async(req,res)=>{
     let alllisting=await Listing.find({})
     res.render("index.ejs",{alllisting});
     
-})
+});
 
 app.get("/listings/new",(req,res)=>{
     res.render("new.ejs");
