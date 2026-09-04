@@ -18,7 +18,7 @@
 
                     <form
                         action="/listings/<%= listing._id %>?_method=PUT"
-                        method="POST"
+                        method="POST" novalidate class="needs-validation"
                     >
 
                         <!-- Title -->
@@ -35,6 +35,9 @@
                                 value="<%= listing.title %>"
                                 required
                             >
+                            <div class="invalid-feedback">
+                                Please enter a title.
+                            </div>
                         </div>
 
                         <!-- Location -->

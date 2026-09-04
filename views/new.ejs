@@ -16,7 +16,7 @@
             <div class="card shadow-sm border-0 rounded-4">
                 <div class="card-body p-4 p-md-5">
 
-                    <form action="/listings" method="POST">
+                    <form action="/listings" method="POST" novalidate class="needs-validation">
 
                         <!-- Title -->
                         <div class="mb-4">
@@ -32,6 +32,9 @@
                                 placeholder="Enter listing title"
                                 required
                             >
+                            <div class="invalid-feedback">
+                                Please enter a title.
+                            </div>
                         </div>
 
                         <!-- Location -->
@@ -48,6 +51,9 @@
                                 placeholder="Enter location"
                                 required
                             >
+                            <div class="invalid-feedback">  
+                                Please enter a location.
+                            </div>
                         </div>
 
                         <!-- Description -->
@@ -64,6 +70,9 @@
                                 placeholder="Describe your property..."
                                 required
                             ></textarea>
+                            <div class="invalid-feedback">
+                                Please enter a description.
+                            </div>
                         </div>
 
                         <!-- Price -->
@@ -83,6 +92,9 @@
                                     placeholder="Enter price"
                                     required
                                 >
+                                <div class="invalid-feedback">
+                                    Please enter a valid price.
+                                </div>
                             </div>
                         </div>
 
