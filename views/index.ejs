@@ -1,6 +1,5 @@
 <% layout('layouts/boilerplate') -%>
 <body>
-    <h3>ALL LISTINGS</h3>
     <div class="row">
 
     <% for(let listing of alllisting){ %>
@@ -9,7 +8,10 @@
 
             <div class="card">
 
+                <a href="/listings/<%= listing._id %>">
+
                 <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
+                </a>
 
                 <div class="card-body">
 
@@ -18,12 +20,16 @@
                     </h5>
 
                     <p class="card-text">
-                        <%= listing.location %>
+                        <b><%= listing.location %></b>  <br> Price:<b><%= listing.price %>/night</b>
                     </p>
 
-                    <a href="/listings/<%= listing._id %>" class="btn btn-primary">
+                    <!-- <p class="card-text">
+                        <%= listing.price %>
+                    </p> -->
+
+                    <!-- <a href="/listings/<%= listing._id %>" class="btn btn-secondary">
                         show more
-                    </a>
+                    </a> -->
 
                 </div>
 

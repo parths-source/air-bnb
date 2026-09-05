@@ -7,8 +7,8 @@ const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
 const ExpressError=require("./utils/ExpressError");
 const wrapAsync=require("./utils/wrapAsync");
-const{listingSchema}=require("./schema.js");    
-
+const { listingSchema, reviewSchema } = require("./schema");
+const Review=require("./models/reviews");
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"public"))); 
 
@@ -20,6 +20,9 @@ app.engine("ejs", ejsMate);
 app.get("/",(req,res)=>{
     res.send("working");
 })
+
+// validate the server side listing
+
 const ValidateSchema=(req,res,next)=>{
     const {error}=listingSchema.validate(req.body);
     if(error){
@@ -27,6 +30,14 @@ const ValidateSchema=(req,res,next)=>{
     }
     next();
 }
+const ValidateReview=(req,res,next)=>{
+    const {error}=reviewSchema.validate(req.body);
+    if(error){
+        throw new ExpressError(400,error.details.map(el=>el.message).join(","));
+    }
+    next();
+}
+
 
 const Mongo='mongodb://127.0.0.1:27017/wanderlust';
 
@@ -39,20 +50,6 @@ async function main(){
     await mongoose.connect(Mongo);
 }
 
-// app.get("/samplelisting",async (req,res)=>{
-//     const sampleListing=new Listing({
-//         title: "Sample Listing",
-//         description: "This is a sample listing for demonstration purposes.",
-//         image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dHJhdmVsJTIwc2NlbmVyeXxlbnwwfHwwfHx8&w=1000&q=80",
-//         price: 100,
-//         location: "Sample Location",
-//         country: "Sample Country"
-//     });
-
-//     await sampleListing.save();
-//     console.log("Sample listing created!");
-//     res.send("Sample listing created!");
-// });
 
 app.get("/listings" , wrapAsync(async(req,res)=>{
 
@@ -65,21 +62,32 @@ app.get("/listings/new",(req,res)=>{
     res.render("new.ejs");
 });
 
-app.post("/listings",wrapAsync(async(req,res)=>{
+app.post("/listings", wrapAsync(async(req,res)=>{
+
     listingSchema.validate(req.body);
+
     if(listingSchema.validate(req.body).error){
+
         const msg=listingSchema.validate(req.body).error.details.map(el=>el.message).join(",");
+
         throw new ExpressError(400,msg);
     }
-    const {title,description,image,price,location,country}=req.body;
-    const newListing=new Listing(req.body);
+
+    const {title,description,image,price,location,country}=req.body.listing;
+
+    const newListing=new Listing(req.body.listing);
+
     await newListing.save();
+
     res.redirect("/listings");
+
 }));
- 
+
+//show route 
+
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
     const {id}=req.params;
-    let listing=await Listing.findById(id);
+    let listing=await Listing.findById(id).populate("reviews");
     res.render("show.ejs",{listing});
 }));
 
@@ -94,11 +102,36 @@ app.put("/listings/:id",ValidateSchema ,wrapAsync(async(req,res)=>{
     let listing=await Listing.findByIdAndUpdate(id,req.body);
     res.redirect(`/listings/${listing._id}`);
 }));
+
 app.delete("/listings/:id",wrapAsync(async(req,res)=>{
     const {id}=req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+// creating a review and saving to database
+
+app.post("/listings/:id/reviews",ValidateReview, wrapAsync(async(req,res)=>{
+    const {id}=req.params;
+    const listing=await Listing.findById(id);
+    let newReview=new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${id}`);
+
+
+}));
+
+// deleting a review
+app.delete("/listings/:id/reviews/:reviewId" , wrapAsync(async(req,res)=>{
+    const{id, reviewId}=req.params;
+    await Listing.findByIdAndUpdate(id , {$pull: { reviews : reviewId}})
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
+ 
+}));
+
 app.all("/*splat",(req,res,next)=>{
     next(new ExpressError(404,"Page Not Found"));
 });
