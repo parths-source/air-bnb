@@ -1,6 +1,8 @@
-const mongoose=require("mongoose");
-const Schema=mongoose.Schema;
-const listingSchema=new Schema({
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const Review = require("./reviews");
+
+const listingSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -10,8 +12,14 @@ const listingSchema=new Schema({
         required: true,
     },
     image: {
-        filename: String,
-        url: String,
+        filename: {
+            type: String,
+            default: "default-image"
+        },
+        url: {
+            type: String,
+            default: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"
+        }
     },
     price: {
         type: Number,
@@ -22,21 +30,24 @@ const listingSchema=new Schema({
     country: {
         type: String,
     },
-    reviews:[
+    reviews: [
         {
             type: Schema.Types.ObjectId,
-            ref:"Review"
+            ref: "Review"
         }
-
     ]
 });
 
-//remove athe reviews too if a listing is removed
-listingSchema.post("findOneAndDelete",async(listing)=>{
-    if(listing){
-        await reviewSchema.deleteMany({_id : {$in: listing.reviews}});
+// Remove reviews when listing is deleted
+listingSchema.post("findOneAndDelete", async (listing) => {
+    if (listing) {
+        await Review.deleteMany({
+            _id: { $in: listing.reviews }
+        });
     }
 });
-const Listing=mongoose.model("Listing",listingSchema);  
-module.exports=Listing; 
+
+const Listing = mongoose.model("Listing", listingSchema);
+
+module.exports = Listing;
 

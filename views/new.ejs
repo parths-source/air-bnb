@@ -1,4 +1,4 @@
-```html
+
 <% layout('layouts/boilerplate') -%>
 
 <div class="container mt-5 mb-5">
@@ -141,7 +141,7 @@
                             <input
                                 type="text"
                                 id="image"
-                                name="listing[image]"
+                                name="listing[image][url]"
                                 class="form-control"
                                 placeholder="Paste image URL"
                             >
@@ -149,25 +149,7 @@
                         </div>
 
 
-                        <!-- Country -->
-
-                        <div class="mb-4">
-
-                            <label for="country" class="form-label fw-semibold">
-                                Country
-                            </label>
-
-                            <input
-                                type="text"
-                                id="country"
-                                name="listing[country]"
-                                class="form-control"
-                                placeholder="Enter country"
-                                required
-                            >
-
-                        </div>
-
+                        
 
                         <!-- Submit -->
 
@@ -189,4 +171,3 @@
     </div>
 
 </div>
-```

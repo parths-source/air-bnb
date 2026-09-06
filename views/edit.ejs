@@ -1,4 +1,4 @@
-<% layout('layouts/boilerplate') -%>
+
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
@@ -30,7 +30,7 @@
                             <input
                                 type="text"
                                 id="title"
-                                name="title"
+                                name="listing[title]"
                                 class="form-control"
                                 value="<%= listing.title %>"
                                 required
@@ -46,10 +46,10 @@
                                 Location
                             </label>
 
-                            <input
+                    <% layout('layouts/boilerplate') -%>        <input
                                 type="text"
                                 id="location"
-                                name="location"
+                                name="listing[location]"
                                 class="form-control"
                                 value="<%= listing.location %>"
                                 required
@@ -64,7 +64,7 @@
 
                             <textarea
                                 id="description"
-                                name="description"
+                                name="listing[description]"
                                 class="form-control"
                                 rows="5"
                                 required
@@ -83,7 +83,7 @@
                                 <input
                                     type="number"
                                     id="price"
-                                    name="price"
+                                    name="listing[price]"
                                     class="form-control"
                                     value="<%= listing.price %>"
                                     required
@@ -93,17 +93,23 @@
 
                         <!-- Image -->
                         <div class="mb-4">
-                           <label for="image" class="form-label fw-semibold">
-                              Image URL
-                           </label>
+                          <label for="image" class="form-label fw-semibold">
+                          Image URL
+                          </label>
 
-                        <input
+                          <input
                             type="text"
                             id="image"
-                            name="image[url]"
+                            name="listing[image][url]"
                             class="form-control"
                             value="<%= listing.image.url %>"
-                        >
+                          >
+
+                          <input
+                          type="hidden"
+                          name="listing[image][filename]"
+                          value="<%= listing.image.filename %>"
+                          >
                         </div>
                         <!-- Update Button -->
                         <button
