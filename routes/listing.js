@@ -42,13 +42,18 @@ router.post(
 
         const listing = new Listing(req.body.listing);
         await listing.save();
+        req.flash("success","new listing created!");
 
-        res.redirect(`/listings/${listing._id}`);
+        res.redirect("/listings");
     })
 );
 
 router.get("/:id", wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id).populate("reviews");
+    if(!listing){
+        req.flash("error","cannot find your requested place");
+        res.redirect("/listings");
+    }
     res.render("show.ejs", { listing });
 }));
 
@@ -72,13 +77,16 @@ router.put("/:id", validateListing, wrapAsync(async (req, res) => {
     Object.assign(listing, req.body.listing);
 
     await listing.save();
+    req.flash("success","listing updated!");
 
     res.redirect(`/listings/${listing._id}`);
 }));
 
 router.delete("/:id", wrapAsync(async (req, res) => {
     await Listing.findByIdAndDelete(req.params.id);
+    req.flash("success","listing deleted!");
     res.redirect("/listings");
+    
 }));
 
 module.exports = router;
