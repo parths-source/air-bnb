@@ -1,13 +1,18 @@
 <% layout('layouts/boilerplate') -%>
-<%=success%>
-<body>
-    <div class="row">
+
+<div class="page-intro">
+    <p class="page-eyebrow">Find your next escape</p>
+    <h1>Stay somewhere unforgettable.</h1>
+    <p>Discover welcoming places, memorable views, and spaces that make every trip feel special.</p>
+</div>
+
+<div class="row listing-grid">
 
     <% for(let listing of alllisting){ %>
 
         <div class="col-lg-4 col-md-6 col-sm-12">
 
-            <div class="card">
+            <div class="card listing-card">
 
                 <a href="/listings/<%= listing._id %>">
 
@@ -17,11 +22,11 @@
                 <div class="card-body">
 
                     <h5 class="card-title">
-                        <b><%= listing.title %></b>
+                        <%= listing.title %>
                     </h5>
 
                     <p class="card-text">
-                        <b><%= listing.location %></b>  <br> <b><%= listing.price %>/night</b>
+                        <%= listing.location %><br><%= listing.price %> / night
                     </p>
 
                     <!-- <p class="card-text">
@@ -41,12 +46,3 @@
     <% } %>
 
 </div>
-    
-<!--     
-    <ul>
-        <% for(let listing of alllisting){ %>
-            <li><a href="/listings/<%= listing._id %>"><%= listing.title %></a></li>
-        <% } %>
-    </ul> -->
-    
-</body>

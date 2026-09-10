@@ -1,53 +1,68 @@
 
-.navbar {
-    height:70px;
-    background-color: rgb(248, 244, 244);
+.wander-navbar { min-height: 76px; background: rgba(255, 253, 248, .96); border-bottom: 1px solid #e8e1d7; box-shadow: 0 5px 20px rgba(49, 43, 35, .06); }
+.wander-brand { display: inline-flex; align-items: center; gap: 10px; color: #24443d; font-family: Georgia, serif; font-size: 1.55rem; font-weight: 700; }
+.wander-brand:hover { color: #c55b3f; }
+.brand-mark { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 50%; color: #fff; background: #c55b3f; font-family: sans-serif; font-size: 1rem; }
+.wander-navbar .nav-link { padding: 10px 13px !important; color: #52625e; font-size: .9rem; font-weight: 600; }
+.wander-navbar .nav-link:hover, .wander-navbar .nav-link:focus { color: #c55b3f; }
+.wander-navbar .nav-link i { margin-right: 5px; color: #c55b3f; }
+.wander-navbar .dropdown-menu { border: 1px solid #eee5d8; border-radius: 10px; box-shadow: 0 12px 30px rgba(49, 43, 35, .1); }
+.wander-navbar .dropdown-item { padding: 9px 16px; color: #52625e; }
+.wander-navbar .dropdown-item:hover { color: #24443d; background: #f8eee5; }
+.wander-search { align-items: center; width: 190px; margin: 0 18px; padding: 7px 11px; border: 1px solid #ded8cc; border-radius: 30px; background: #fff; }
+.wander-search i { color: #c55b3f; font-size: .85rem; }
+.wander-search input { width: 100%; border: 0; outline: 0; padding-left: 8px; color: #24443d; background: transparent; font-size: .84rem; }
+.navbar-actions { display: flex; align-items: center; gap: 15px; }
+.welcome-text { color: #52625e; font-size: .85rem; }
+.sign-in-link { color: #24443d; font-size: .9rem; font-weight: 700; text-decoration: none; }
+.sign-in-link:hover { color: #c55b3f; }
+.btn-signup { padding: 9px 16px; border-radius: 24px; color: #fff; background: #24443d; font-size: .85rem; font-weight: 700; }
+.btn-signup:hover { color: #fff; background: #c55b3f; }
+.btn-logout { padding: 8px 14px; border: 1px solid #ded8cc; border-radius: 22px; color: #24443d; background: transparent; font-size: .85rem; font-weight: 700; }
+.btn-logout:hover { color: #fff; border-color: #c55b3f; background: #c55b3f; }
+.wander-navbar .navbar-toggler { border: 0; color: #24443d; font-size: 1.2rem; }
+.wander-navbar .navbar-toggler:focus { box-shadow: none; }
+@media (max-width: 767px) {
+    .wander-navbar .navbar-collapse { padding: 14px 0 8px; }
+    .wander-search { width: 100%; margin: 8px 0 14px; }
+    .navbar-actions { justify-content: space-between; padding-top: 4px; }
+    .welcome-text { margin-right: auto; }
 }
-
-.navbar-brand {
-    height: 100%;
-    color:rgb(218, 7, 7);
-    font-size: 2.2rem;
-    margin-bottom: 3px;
-}
-footer{
-    background-color: rgb(248, 244, 244);
-
-    
-}
-.nav-link{
-    color: black;   
-    font-weight: bold;
-}
-.f-info-links , .f-info-socials , .name{
-    color:black;
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-    gap: 20px;
-    
-}
-
-.f-info-links a{
-    text-decoration: none; 
-    color:rgb(58, 56, 56);
-    margin-right: 10px;  
-}
-
-.f-info-links a:hover{
-    font-weight: bold;
-}
-.card{
-    border:none !important;
-    margin-bottom: 20px;
-
-}
-.card-img-top{
-    border-radius: 1rem !important;
-    width:100%;
-    height: 200px;
-    object-fit: cover;
-}
-.card-body{
-    padding:0;
+body { color: #293b37; background: #fffdf8; font-family: "DM Sans", Arial, sans-serif; }
+.container { max-width: 1180px; }
+.page-intro { padding: 44px 0 28px; }
+.page-eyebrow { margin-bottom: 8px; color: #c55b3f; font-size: .75rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+.page-intro h1 { margin-bottom: 8px; color: #24443d; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+.page-intro p { max-width: 560px; margin: 0; color: #71807a; font-size: 1rem; }
+.listing-grid { row-gap: 34px; }
+.listing-card { height: 100%; border: 0 !important; background: transparent; }
+.listing-card a { display: block; overflow: hidden; border-radius: 16px; background: #e9e4da; }
+.listing-card .card-img-top { height: 250px; border-radius: 16px !important; transition: transform .35s ease; }
+.listing-card:hover .card-img-top { transform: scale(1.035); }
+.listing-card .card-body { padding: 14px 3px 0; }
+.listing-card .card-title { margin-bottom: 7px; color: #24443d; font-size: 1rem; font-weight: 700; }
+.listing-card .card-text { margin: 0; color: #71807a; font-size: .9rem; line-height: 1.55; }
+.listing-card .card-text b { color: inherit; font-weight: 500; }
+.listing-card .card-text b:last-child { color: #293b37; font-weight: 700; }
+.form-shell { border: 1px solid #eee5d8 !important; border-radius: 18px !important; background: #fff; box-shadow: 0 14px 35px rgba(49, 43, 35, .07) !important; }
+.form-shell .form-control, .form-shell .input-group-text { min-height: 48px; border-color: #ded8cc; }
+.form-shell .form-control { color: #293b37; border-radius: 10px; }
+.form-shell .form-control:focus { border-color: #c55b3f; box-shadow: 0 0 0 3px rgba(197, 91, 63, .13); }
+.form-shell .form-label { color: #40544e; font-size: .9rem; }
+.form-shell .input-group-text { color: #c55b3f; background: #fff8f1; }
+.btn-dark { border: 0; border-radius: 10px; background: #24443d; }
+.btn-dark:hover { background: #c55b3f; }
+.listing-detail { border: 1px solid #eee5d8 !important; border-radius: 18px !important; background: #fff; box-shadow: 0 14px 35px rgba(49, 43, 35, .07) !important; }
+.review-form { width: min(100%, 420px) !important; border-color: #eee5d8 !important; background: #fffaf4; }
+.review-form textarea:focus { outline: 0; border-color: #c55b3f !important; box-shadow: 0 0 0 3px rgba(197, 91, 63, .13); }
+footer { margin-top: 64px; padding: 36px 20px; color: #71807a; background: #f7f1e8; }
+.f-info { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 1180px; margin: auto; }
+.f-info-socials { display: flex; gap: 20px; color: #24443d; font-size: 1.15rem; }
+.f-info-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.f-info-links a { color: #52625e; text-decoration: none; }
+.f-info-links a:hover { color: #c55b3f; }
+.name { color: #52625e; font-size: .85rem; }
+@media (max-width: 767px) {
+    .page-intro { padding: 30px 0 22px; }
+    .listing-card .card-img-top { height: 220px; }
 }

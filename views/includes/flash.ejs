@@ -21,6 +21,8 @@
 <% } %>
 
 <style>
+	.auth-flash { position: fixed; top: 18px; left: 50%; z-index: 10; width: min(calc(100% - 48px), 680px); transform: translateX(-50%); }
+	.auth-flash .flash-message { margin: 0; }
 	.flash-message { position: relative; display: flex; align-items: flex-start; gap: 12px; max-width: 680px; margin: 18px auto; padding: 16px 42px 16px 16px; border: 1px solid; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.08); animation: flash-in .35s ease-out; }
 	.flash-success { color: #166534; background: #f0fdf4; border-color: #86efac; }
 	.flash-error { color: #991b1b; background: #fef2f2; border-color: #fca5a5; }

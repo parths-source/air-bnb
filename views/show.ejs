@@ -9,16 +9,17 @@
 
             <!-- Page Heading -->
             <div class="mb-4">
-                <h1 class="fw-bold">Listing Details</h1>
+                <p class="page-eyebrow">Your next destination</p>
+                <h1 class="fw-bold">Discover this stay</h1>
 
                 <p class="text-muted">
-                    Have a look at this beautiful property.
+                    Take a closer look at everything this place has to offer.
                 </p>
             </div>
 
 
             <!-- Listing Card -->
-            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="card listing-detail shadow-sm border-0 rounded-4 overflow-hidden">
 
                 <!-- Image -->
                 <img
@@ -44,6 +45,8 @@
                         <%= listing.location %>
                     </p>
 
+                    <p><i>Owned by: <b><%=listing.owner.username%></b></i></p>
+
                     <hr>
 
 
@@ -51,7 +54,7 @@
                     <div class="mt-4">
 
                         <h5 class="fw-bold">
-                            About this place
+                            About this stay
                         </h5>
 
                         <p class="text-muted">
@@ -65,7 +68,7 @@
                     <div class="mt-4">
 
                         <h5 class="fw-bold">
-                            Price
+                            Nightly rate
                         </h5>
 
                         <h3 class="fw-bold">
@@ -78,7 +81,7 @@
 
                     </div>
 
-
+                    <% if(currentUser && currentUser._id.equals(listing.owner._id) ){ %>
                     <!-- Buttons -->
                     <div class="d-flex gap-3 mt-5">
 
@@ -107,13 +110,15 @@
                         </form>
 
                     </div>
+                    <%} %>
 
 
                     <!-- Review Form -->
+                    <%if(currentUser)  { %>
                     <div class="review-form mt-5">
 
                         <h4>
-                            Leave a Review
+                            Share your experience
                         </h4>
 
                         <form
@@ -180,13 +185,13 @@
 
 
                             <button type="submit">
-                                Submit
+                                Post review
                             </button>
 
                         </form>
 
                     </div>
-
+                
 
                     <style>
 
@@ -244,13 +249,13 @@
                         }
 
                     </style>
-
+                    <% } %>
 
                     <!-- All Reviews -->
                     <div class="mt-5">
 
                         <h4 class="mb-4">
-                            <b>All Reviews</b>
+                            Guest reviews
                         </h4>
 
 
@@ -264,6 +269,7 @@
 
                                         <div class="card-body">
 
+                                            <h4><strong><%= review.author ? review.author.username : "Anonymous guest" %></strong></h4>
                                             <p class="card-text">
                                                 "<%= review.comment %>"
                                             </p>
@@ -295,9 +301,11 @@
                                             <small class="text-muted">
                                                 Rating: <%= review.rating %>/5
                                             </small>
-                                            <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary"><b>remove</b></button>
-                                            </form>
+                                            <% if (currentUser && review.author && String(currentUser._id) === String(review.author._id)) { %>
+                                                <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary"><b>Remove review</b></button>
+                                                </form>
+                                            <% } %>
 
                                         </div>
 

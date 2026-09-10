@@ -1,34 +1,48 @@
-<nav class="navbar navbar-expand-md bg-body-white border-bottom sticky-top >
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-duotone fa-solid fa-map"></i></a>
+<nav class="navbar navbar-expand-md wander-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand wander-brand" href="/listings" aria-label="Wanderlust home">
+      <span class="brand-mark"><i class="fa-solid fa-compass"></i></span>
+      <span>Wanderlust</span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <i class="fa-solid fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/listings/new">Create Listing</a>
+          <a class="nav-link" href="/listings"><i class="fa-solid fa-location-dot"></i> Explore</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/listings">All Places</a>
+          <a class="nav-link" href="/listings/new"><i class="fa-solid fa-plus"></i> Create listing</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Destination
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Discover
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Adventorous</a></li>
-            <li><a class="dropdown-item" href="#">Lowkey</a></li>
+            <li><a class="dropdown-item" href="#">Adventure</a></li>
+            <li><a class="dropdown-item" href="#">Slow escapes</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">HoneyMoon</a></li>
+            <li><a class="dropdown-item" href="#">Romantic stays</a></li>
           </ul>
         </li>
     
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form class="wander-search d-flex" role="search" action="/listings">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input name="q" type="search" placeholder="Search places" aria-label="Search places">
       </form>
+      <div class="navbar-actions">
+        <% if (typeof currentUser !== "undefined" && currentUser) { %>
+          <span class="welcome-text">Hi, <%= currentUser.username %></span>
+          <form action="/logout" method="POST">
+            <button class="btn btn-logout" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</button>
+          </form>
+        <% } else { %>
+          <a class="sign-in-link" href="/login">Sign in</a>
+          <a class="btn btn-signup" href="/signup">Create account</a>
+        <% } %>
+      </div>
     </div>
   </div>
 </nav>
