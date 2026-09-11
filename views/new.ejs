@@ -27,7 +27,7 @@
 
                 <div class="card-body p-4 p-md-5">
 
-                    <form action="/listings" method="POST" novalidate class="needs-validation">
+                    <form action="/listings" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
 
                         <!-- Title -->
 
@@ -136,13 +136,13 @@
                         <div class="mb-4">
 
                             <label for="image" class="form-label fw-semibold">
-                                Image URL
+                                Upload your listing
                             </label>
 
                             <input
-                                type="text"
+                                type="file"
                                 id="image"
-                                name="listing[image][url]"
+                                name="listing[image]"
                                 class="form-control"
                                 placeholder="Paste a high-quality image URL"
                             >

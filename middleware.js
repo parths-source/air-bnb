@@ -20,14 +20,21 @@ module.exports.saveRedirectUrl=(req,res,next)=>{
 
 };
 module.exports.isOwner= async (req,res,next)=>{
-    let id=req.params;
-    let listingcheck= await Listing.findByid(id);
-    if(!listingcheck.owner._id.equals(res.locals.currentUser._id)){
-        req.flash("error","you are nor the owner");
-        res.redirect(`/listings/${id}`);
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
+
+    if (!listing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
     }
+
+    if (!listing.owner || String(listing.owner) !== String(req.user._id)) {
+        req.flash("error","you are nor the owner");
+        return res.redirect(`/listings/${id}`);
+    }
+
     next();
-}
+};
 
 module.exports.isReviewAuthor = async (req, res, next) => {
     const { id, reviewId } = req.params;

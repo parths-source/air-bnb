@@ -19,7 +19,8 @@
 
                     <form
                         action="/listings/<%= listing._id %>?_method=PUT"
-                        method="POST" novalidate class="needs-validation"
+                        method="POST"
+                        enctype="multipart/form-data"
                     >
 
                         <!-- Title -->
@@ -93,24 +94,18 @@
                         </div>
 
                         <!-- Image -->
-                        <div class="mb-4">
-                          <label for="image" class="form-label fw-semibold">
-                          Image URL
-                          </label>
+                                                <div class="mb-4">
+                                                        <label for="image" class="form-label fw-semibold">
+                                                                Replace image (optional)
+                                                        </label>
 
-                          <input
-                            type="text"
-                            id="image"
-                            name="listing[image][url]"
-                            class="form-control"
-                            value="<%= listing.image.url %>"
-                          >
-
-                          <input
-                          type="hidden"
-                          name="listing[image][filename]"
-                          value="<%= listing.image.filename %>"
-                          >
+                                                        <input
+                                                                type="file"
+                                                                id="image"
+                                                                name="listing[image]"
+                                                                class="form-control"
+                                                                accept=".png,.jpg,.jpeg"
+                                                        >
                         </div>
                         <!-- Update Button -->
                         <button

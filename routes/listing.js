@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 
-const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 const wrapAsync = require("../utils/wrapAsync");
 const { listingSchema } = require("../schema");
 const { isLogged,isOwner } = require("../middleware");
+const listingController = require("../controllers/listing");
+const multer  = require('multer')
+const {storage}=require("../cloudConfig");
+
+const upload = multer({ storage });
 
 const validateListing = (req, res, next) => {
     const { error } = listingSchema.validate(req.body);
@@ -21,90 +24,39 @@ const validateListing = (req, res, next) => {
     next();
 };
 
-router.get("/", wrapAsync(async (req, res) => {
-    const alllisting = await Listing.find({});
-    res.render("index.ejs", { alllisting });
-}));
+router.get("/", wrapAsync(listingController.index));
 
 
 // create route 
 
-router.get("/new",isLogged, (req, res) => {
-
-    res.render("new.ejs");
-});
+router.get("/new", isLogged, listingController.renderNewForm);
 
 router.post(
     "/",
-    validateListing,
-    wrapAsync(async (req, res) => {
+    upload.single("listing[image]"),
+     validateListing,
+    wrapAsync(listingController.createListing)
+ );
 
-        if (!req.body.listing.image || !req.body.listing.image.url) {
-            req.body.listing.image = {
-                filename: "default-image",
-                url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"
-            };
-        }
-
-        const listing = new Listing(req.body.listing);
-        listing.owner=req.user._id;
-        await listing.save();
-        req.flash("success","new listing created!");
-        res.redirect("/listings");
-    })
-);
 
 //show route
 
-router.get("/:id", wrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.id)
-        .populate({
-            path: "reviews",
-            populate: { path: "author" }
-        })
-        .populate("owner");
-    if(!listing){
-        req.flash("error","cannot find your requested place");
-        res.redirect("/listings");
-    }
-    res.render("show.ejs", { listing });
-    console.log(listing);
-}));
+router.get("/:id", wrapAsync(listingController.showListing));
 
 // edit route 
 
-router.get("/:id/edit", isLogged,wrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.id);
-    res.render("edit.ejs", { listing });
-}));
+router.get("/:id/edit", isLogged, wrapAsync(listingController.renderEditForm));
 
-router.put("/:id", validateListing, isOwner,wrapAsync(async (req, res) => {
-
-    const listing = await Listing.findById(req.params.id);
-
-    // If user doesn't provide an image, use default image
-    if (!req.body.listing.image || !req.body.listing.image.url) {
-        req.body.listing.image = {
-            filename: "default-image",
-            url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"
-        };
-    }
-
-    Object.assign(listing, req.body.listing);
-
-    await listing.save();
-    req.flash("success","listing updated!");
-
-    res.redirect(`/listings/${listing._id}`);
-}));
+router.put(
+    "/:id",
+    upload.single("listing[image]"),
+    validateListing,
+    isOwner,
+    wrapAsync(listingController.updateListing)
+);
 
 //delete route
 
-router.delete("/:id",isLogged,isOwner, wrapAsync(async (req, res) => {
-    await Listing.findByIdAndDelete(req.params.id);
-    req.flash("success","listing deleted!");
-    res.redirect("/listings");
-    
-}));
+router.delete("/:id", isLogged, isOwner, wrapAsync(listingController.destroyListing));
 
 module.exports = router;
