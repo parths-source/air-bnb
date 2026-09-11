@@ -1,7 +1,15 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const mongoose = require("mongoose");
 const Listing = require("../models/listing");
 
-const Mongo = "mongodb://127.0.0.1:27017/wanderlust";
+const Mongo = process.env.ATLASDB_URL || process.env.MONGO_URL;
+
+if (!Mongo) {
+    throw new Error("ATLASDB_URL or MONGO_URL must be configured");
+}
 
 const getCategory = (listing) => {
     const listingText = `${listing.title || ""} ${listing.description || ""}`.toLowerCase();

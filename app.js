@@ -13,12 +13,21 @@ const strategy=require("passport-local");
 const  User=require("./models/user");
 //express session
 const session=require("express-session")
+
+const { MongoStore } = require('connect-mongo');
 if (process.env.NODE_ENV === "production" && !process.env.SESSION_SECRET) {
     throw new Error("SESSION_SECRET must be configured in production");
 }
 const sessionSecret = process.env.SESSION_SECRET || "development-only-secret";
 const sessionDuration = 7 * 24 * 60 * 60 * 1000;
+const sessionStore = MongoStore.create({
+    mongoUrl: process.env.ATLASDB_URL || process.env.MONGO_URL,
+    crypto: { secret: sessionSecret },
+    touchAfter: 24 * 3600,
+});
+
 const sessionOptions={
+    store: sessionStore,
     secret:sessionSecret,
     resave:false,
     saveUninitialized:true,
@@ -78,7 +87,11 @@ app.use("/", personalInfoRouter);
 app.use("/listings", listingRouter);
 app.use("/listings", reviewRouter);
 
-const Mongo = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
+const Mongo = process.env.ATLASDB_URL || process.env.MONGO_URL;
+
+if (!Mongo) {
+    throw new Error("ATLASDB_URL or MONGO_URL must be configured");
+}
 
 async function main() {
     await mongoose.connect(Mongo);
