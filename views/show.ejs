@@ -42,7 +42,7 @@
                         <i class="fa-solid fa-location-dot"></i>
                         <%= listing.location %>
                     </p>
-                    <p><i>Owned by: <b><%= listing.owner.username %></b></i></p>
+                    <p><i>Owned by: <b><%= listing.owner ? listing.owner.username : "STAYORA host" %></b></i></p>
                     <hr>
 
                     <div class="mt-4">
@@ -58,7 +58,7 @@
                         </h3>
                     </div>
 
-                    <% if(currentUser && currentUser._id.equals(listing.owner._id) ){ %>
+                    <% if(currentUser && listing.owner && currentUser._id.equals(listing.owner._id) ){ %>
                     <!-- Buttons -->
                     <div class="d-flex gap-3 mt-5">
 

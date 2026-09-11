@@ -79,7 +79,7 @@ app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
 app.get("/", (req, res) => {
-    res.send("working");
+    res.redirect("/listings");
 });
 
 app.use("/",userRouter);

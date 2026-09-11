@@ -2,30 +2,26 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 
-const mongoose=require("mongoose");
-const initdata=require("./data.js");
-const Listing=require("../models/listing.js");  
+const mongoose = require("mongoose");
+const initdata = require("./data.js");
+const Listing = require("../models/listing.js");
 const Mongo = process.env.ATLASDB_URL || process.env.MONGO_URL;
 
 if (!Mongo) {
     throw new Error("ATLASDB_URL or MONGO_URL must be configured");
 }
 
-main().then(()=>{
-    console.log("connected to database");
-}).catch((err)=>{
-    console.log(err);
-});
 async function main(){
     await mongoose.connect(Mongo);
+    console.log("connected to database");
+    await Listing.deleteMany({});
+    await Listing.insertMany(initdata.data);
+    console.log("data inserted");
+    await mongoose.disconnect();
 }
-const initDB=()=>{
-    Listing.deleteMany({}).then(()=>{
-        Listing.insertMany(initdata.data).then(()=>{
-            console.log("data inserted");           
-        }).catch((err)=>{
-            console.log(err);
-        }); 
-    });
-}
-initDB();
+
+main().catch(async (error) => {
+    console.error(error);
+    await mongoose.disconnect();
+    process.exitCode = 1;
+});
