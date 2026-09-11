@@ -1,12 +1,57 @@
 const Listing = require("../models/listing");
 
 module.exports.index = async (req, res) => {
-    const alllisting = await Listing.find({});
-    res.render("index.ejs", { alllisting });
+    const category = req.query.category;
+    const query = typeof req.query.q === "string" ? req.query.q.trim() : "";
+    const allowedCategories = ["mountains", "iconic cities", "arctic", "beaches"];
+    const filter = {};
+
+    if (category && allowedCategories.includes(category)) {
+        filter.category = category;
+    }
+
+    if (query) {
+        const searchPattern = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+        filter.$or = [
+            { title: searchPattern },
+            { description: searchPattern },
+            { location: searchPattern },
+            { country: searchPattern },
+            { category: searchPattern }
+        ];
+    }
+
+    const alllisting = await Listing.find(filter);
+    const favoriteIds = req.user ? (req.user.favorites || []).map((id) => String(id)) : [];
+    res.render("index.ejs", { alllisting, selectedCategory: filter.category, favoriteIds });
+};
+
+module.exports.toggleFavorite = async (req, res) => {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
+    }
+
+    const favoriteIds = (req.user.favorites || []).map((id) => String(id));
+    const isFavorite = favoriteIds.includes(String(listing._id));
+    const update = isFavorite
+        ? { $pull: { favorites: listing._id } }
+        : { $addToSet: { favorites: listing._id } };
+
+    await req.user.updateOne(update);
+    req.flash("success", isFavorite ? "Removed from favorites." : "Saved to your favorites.");
+    res.redirect(req.get("Referrer") || "/listings");
 };
 
 module.exports.renderNewForm = (req, res) => {
     res.render("new.ejs");
+};
+
+module.exports.renderFindPage = async (req, res) => {
+    const alllisting = await Listing.find({});
+    res.render("find.ejs", { alllisting });
 };
 
 module.exports.createListing = async (req, res) => {
@@ -52,11 +97,19 @@ module.exports.showListing = async (req, res) => {
 
 module.exports.renderEditForm = async (req, res) => {
     const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
+    }
     res.render("edit.ejs", { listing });
 };
 
 module.exports.updateListing = async (req, res) => {
     const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
+    }
 
     Object.assign(listing, req.body.listing);
 
@@ -73,7 +126,11 @@ module.exports.updateListing = async (req, res) => {
 };
 
 module.exports.destroyListing = async (req, res) => {
-    await Listing.findByIdAndDelete(req.params.id);
+    const deletedListing = await Listing.findByIdAndDelete(req.params.id);
+    if (!deletedListing) {
+        req.flash("error", "Listing not found.");
+        return res.redirect("/listings");
+    }
     req.flash("success", "listing deleted!");
     res.redirect("/listings");
 };

@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-md wander-navbar sticky-top">
   <div class="container">
-    <a class="navbar-brand wander-brand" href="/listings" aria-label="Wanderlust home">
+    <a class="navbar-brand wander-brand" href="/listings" aria-label="STAYORA home">
       <span class="brand-mark"><i class="fa-solid fa-compass"></i></span>
-      <span>Wanderlust</span>
+      <span>STAYORA</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fa-solid fa-bars"></i>
@@ -15,23 +15,17 @@
         <li class="nav-item">
           <a class="nav-link" href="/listings/new"><i class="fa-solid fa-plus"></i> Create listing</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Discover
+        <li class="nav-item">
+          <a class="nav-link" href="/find">
+            <i class="fa-solid fa-map-location-dot"></i> Find
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Adventure</a></li>
-            <li><a class="dropdown-item" href="#">Slow escapes</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Romantic stays</a></li>
-          </ul>
         </li>
     
       </ul>
-      <form class="wander-search d-flex" role="search" action="/listings">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input name="q" type="search" placeholder="Search places" aria-label="Search places">
-      </form>
+      <a class="favorites-link" href="/favorites">
+        <i class="fa-solid fa-heart"></i>
+        Favorites
+      </a>
       <div class="navbar-actions">
         <% if (typeof currentUser !== "undefined" && currentUser) { %>
           <span class="welcome-text">Hi, <%= currentUser.username %></span>
@@ -44,5 +38,21 @@
         <% } %>
       </div>
     </div>
+  </div>
+</nav>
+<nav class="category-navbar" aria-label="Listing categories">
+  <div class="container category-navbar-inner">
+    <a class="category-link" href="/listings?category=mountains">
+      <i class="fa-solid fa-mountain-sun"></i><span>Mountains</span>
+    </a>
+    <a class="category-link" href="/listings?category=iconic%20cities">
+      <i class="fa-solid fa-city"></i><span>Iconic cities</span>
+    </a>
+    <a class="category-link" href="/listings?category=arctic">
+      <i class="fa-solid fa-snowflake"></i><span>Arctic</span>
+    </a>
+    <a class="category-link" href="/listings?category=beaches">
+      <i class="fa-solid fa-umbrella-beach"></i><span>Beaches</span>
+    </a>
   </div>
 </nav>

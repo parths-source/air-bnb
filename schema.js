@@ -13,6 +13,8 @@ const listingSchema = Joi.object({
 
         location: Joi.string().required(),
 
+        category: Joi.string().valid("mountains", "iconic cities", "arctic", "beaches").required(),
+
         price: Joi.number().required().min(0)
     }).required()
 });

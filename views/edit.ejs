@@ -42,6 +42,18 @@
                             </div>
                         </div>
 
+                        <!-- Category -->
+                        <div class="mb-4">
+                            <label for="category" class="form-label fw-semibold">Category</label>
+                            <select id="category" name="listing[category]" class="form-select" required>
+                                <option value="" disabled>Choose a category</option>
+                                <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
+                                <option value="iconic cities" <%= listing.category === "iconic cities" ? "selected" : "" %>>Iconic cities</option>
+                                <option value="arctic" <%= listing.category === "arctic" ? "selected" : "" %>>Arctic</option>
+                                <option value="beaches" <%= listing.category === "beaches" ? "selected" : "" %>>Beaches</option>
+                            </select>
+                        </div>
+
                         <!-- Location -->
                         <div class="mb-4">
                             <label for="location" class="form-label fw-semibold">

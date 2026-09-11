@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require("./reviews");
-const User=require("./user");
 
 const listingSchema = new Schema({
     title: {
@@ -32,6 +31,12 @@ const listingSchema = new Schema({
     },
     country: {
         type: String,
+    },
+    category: {
+        type: String,
+        enum: ["mountains", "iconic cities", "arctic", "beaches"],
+        required: true,
+        default: "iconic cities",
     },
     reviews: [
         {

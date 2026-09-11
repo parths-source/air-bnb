@@ -26,6 +26,7 @@ const validateListing = (req, res, next) => {
 
 router.get("/", wrapAsync(listingController.index));
 
+router.post("/:id/favorite", isLogged, wrapAsync(listingController.toggleFavorite));
 
 // create route 
 

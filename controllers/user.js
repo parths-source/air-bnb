@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Listing = require("../models/listing");
 const passport = require("passport");
 
 module.exports.renderSignupForm = (req, res) => {
@@ -26,6 +27,12 @@ module.exports.signup = async (req, res, next) => {
 
 module.exports.renderLoginForm = (req, res) => {
     res.render("login.ejs");
+};
+
+module.exports.renderFavorites = async (req, res) => {
+    const favoriteIds = (req.user.favorites || []).map((id) => String(id));
+    const alllisting = await Listing.find({ _id: { $in: favoriteIds } });
+    res.render("index.ejs", { alllisting, selectedCategory: "Your favorites", favoriteIds });
 };
 
 module.exports.login = async (req, res, next) => {

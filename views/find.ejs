@@ -1,0 +1,32 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="find-page">
+    <div class="page-intro">
+        <p class="page-eyebrow">Choose your destination</p>
+        <h1>Find a stay near anywhere.</h1>
+        <p>Click a place on the map and we will show you the closest listing.</p>
+    </div>
+
+    <section class="find-map-shell" aria-labelledby="find-map-title">
+        <div class="find-map-heading">
+            <div>
+                <h2 id="find-map-title">Select a location</h2>
+                <p id="find-map-status" class="map-status" role="status">Preparing listings...</p>
+            </div>
+            <a id="closest-listing-link" class="btn btn-dark d-none" href="#">
+                View closest stay
+            </a>
+        </div>
+        <div id="find-map" class="find-map" aria-label="World map for selecting a location"></div>
+    </section>
+
+    <div id="listing-location-data" class="d-none">
+        <% for(let listing of alllisting){ %>
+            <span
+                data-listing-title="<%= listing.title %>"
+                data-listing-location="<%= [listing.location, listing.country].filter(Boolean).join(', ') %>"
+                data-listing-url="/listings/<%= listing._id %>"
+            ></span>
+        <% } %>
+    </div>
+</div>

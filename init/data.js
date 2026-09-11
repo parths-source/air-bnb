@@ -378,4 +378,18 @@ const sampleListings = [
   },
 ];
 
+sampleListings.forEach((listing) => {
+  const listingText = `${listing.title} ${listing.description}`.toLowerCase();
+
+  if (/beach|island|maldives|phuket|mykonos|bali|cancun|fiji/.test(listingText)) {
+    listing.category = "beaches";
+  } else if (/ski|arctic|snow|alps/.test(listingText)) {
+    listing.category = "arctic";
+  } else if (/mountain|cabin|lake|banff|montana|aspen|treehouse|serengeti/.test(listingText)) {
+    listing.category = "mountains";
+  } else {
+    listing.category = "iconic cities";
+  }
+});
+
 module.exports = { data: sampleListings };

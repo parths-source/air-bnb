@@ -2,22 +2,28 @@
 
 <div class="page-intro">
     <p class="page-eyebrow">Find your next escape</p>
-    <h1>Stay somewhere unforgettable.</h1>
+    <h1><%= selectedCategory ? selectedCategory.replace(/\b\w/g, letter => letter.toUpperCase()) : "Stay somewhere unforgettable." %></h1>
     <p>Discover welcoming places, memorable views, and spaces that make every trip feel special.</p>
 </div>
 
-<div class="row listing-grid">
+<div class="listing-grid">
 
     <% for(let listing of alllisting){ %>
 
-        <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="listing-grid-item">
 
             <div class="card listing-card">
 
-                <a href="/listings/<%= listing._id %>">
-
-                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
-                </a>
+                <div class="listing-image-wrap">
+                    <a href="/listings/<%= listing._id %>">
+                        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
+                    </a>
+                    <form action="/listings/<%= listing._id %>/favorite" method="POST" class="favorite-form">
+                        <button class="favorite-button <%= favoriteIds.includes(String(listing._id)) ? 'is-favorite' : '' %>" type="submit" aria-label="<%= favoriteIds.includes(String(listing._id)) ? 'Remove from favorites' : 'Add to favorites' %>" title="<%= favoriteIds.includes(String(listing._id)) ? 'Remove from favorites' : 'Add to favorites' %>">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+                    </form>
+                </div>
 
                 <div class="card-body">
 
@@ -46,3 +52,10 @@
     <% } %>
 
 </div>
+
+<% if (!alllisting.length) { %>
+    <div class="empty-state">
+        <h2>No stays in this category yet.</h2>
+        <a href="/listings" class="btn btn-dark">View all listings</a>
+    </div>
+<% } %>

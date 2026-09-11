@@ -89,6 +89,20 @@
                     </div>
                     <%} %>
 
+                    <!-- Listing location -->
+                    <section class="listing-map mt-5" aria-labelledby="listing-map-title">
+                        <h4 id="listing-map-title" class="mb-3">Where you'll stay</h4>
+                        <div class="listing-map-frame">
+                            <iframe
+                                title="Map showing <%= listing.location %>"
+                                src="https://www.google.com/maps?q=<%= encodeURIComponent([listing.location, listing.country].filter(Boolean).join(', ')) %>&output=embed"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                    </section>
+
 
                     <!-- Review Form -->
                     <% if (currentUser) { %>

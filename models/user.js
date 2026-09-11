@@ -7,7 +7,13 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
-    }
+    },
+    favorites: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Listing"
+        }
+    ]
 });
 
 userSchema.plugin(passportLocalMongoose);

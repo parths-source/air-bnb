@@ -1,7 +1,6 @@
 if(process.env.NODE_ENV != "production"){
     require('dotenv').config();
 }
-console.log(`SECRET ${process.env.SECRET}`)
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -14,14 +13,21 @@ const strategy=require("passport-local");
 const  User=require("./models/user");
 //express session
 const session=require("express-session")
+if (process.env.NODE_ENV === "production" && !process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET must be configured in production");
+}
+const sessionSecret = process.env.SESSION_SECRET || "development-only-secret";
+const sessionDuration = 7 * 24 * 60 * 60 * 1000;
 const sessionOptions={
-    secret:"my code",
+    secret:sessionSecret,
     resave:false,
     saveUninitialized:true,
     cookie : {
-        expires:Date.now()+ 7*24*60*60*1000,
-        maxAge:Date.now()+ 7*24*60*60*1000,
+        expires: new Date(Date.now() + sessionDuration),
+        maxAge: sessionDuration,
         httpOnly:true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
 
     }
 };
@@ -53,6 +59,7 @@ const ExpressError = require("./utils/ExpressError");
 const listingRouter = require("./routes/listing");
 const reviewRouter = require("./routes/review");
 const userRouter=require("./routes/user");
+const personalInfoRouter = require("./controllers/personalinfo");
 
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -66,19 +73,16 @@ app.get("/", (req, res) => {
     res.send("working");
 });
 
+app.use("/",userRouter);
+app.use("/", personalInfoRouter);
 app.use("/listings", listingRouter);
 app.use("/listings", reviewRouter);
-app.use("/",userRouter);
 
-const Mongo = "mongodb://127.0.0.1:27017/wanderlust";
+const Mongo = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
     await mongoose.connect(Mongo);
 }
-
-main()
-    .then(() => console.log("connected to database"))
-    .catch((err) => console.log(err));
 
 app.all("/*splat", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
@@ -93,7 +97,15 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { err: { message } });
 });
 
-app.listen(8080, () => {
-    console.log("server is running at port 8080");
-});
+main()
+    .then(() => {
+        console.log("connected to database");
+        app.listen(process.env.PORT || 8080, () => {
+            console.log(`server is running at port ${process.env.PORT || 8080}`);
+        });
+    })
+    .catch((err) => {
+        console.error("database connection failed", err);
+        process.exitCode = 1;
+    });
 

@@ -5,7 +5,7 @@ module.exports.isLogged=(req,res,next)=>{
     if(!req.isAuthenticated()){
         //redirect url if user not present 
 
-        req.session.redirectUrl=req.originalUrl;
+        req.session.redirectUrl=req.get("Referrer") || req.originalUrl;
         req.flash("error","you must login first");
         return res.redirect("/login");
     }
